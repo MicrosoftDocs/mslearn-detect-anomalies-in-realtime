@@ -8,9 +8,10 @@ echo '--------------------------------------------------------'
 AccountId=$(az account list --query '[0].id'  --output tsv)
 RgName=$(az group list --query '[0].name'  --output tsv)
 Location=$(az group list --query '[0].location'  --output tsv)
+UUID=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 32 | head -n 1)
 
 GaLocation=eastus2
-StorageAcctName=mylearnstorageacct
+StorageAcctName='learn$toreacct'
 StorageContainerName=learninputcontainer
 OuputStorageContainerName=learnoutputcontainer
 MultiADStorageContainerName=mvadlearninputcontainer
@@ -25,7 +26,7 @@ AdName=learnAnomalyDetector
 # Create a Storage Account for the Blob
 echo '------------------------------------------'
 echo 'Creating a Storage Account for the Blob...'
-az storage account create -n $StorageAcctName --resource-group="$RgName"
+az storage account create -n $StorageAcctName$UUID --resource-group="$RgName"
 echo 'Storage acount created'
 
 StorageConnStr=$(az storage account show-connection-string -g $RgName  -n $StorageAcctName --query connectionString --output tsv)
