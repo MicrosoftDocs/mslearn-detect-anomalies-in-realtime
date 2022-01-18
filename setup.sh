@@ -11,7 +11,7 @@ Location=$(az group list --query '[0].location'  --output tsv)
 UUID=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 32 | head -n 1)
 
 GaLocation=eastus2
-StorageAcctName='learn$toreacct'
+StorageAcctName='learnseacct'
 StorageContainerName=learninputcontainer
 OuputStorageContainerName=learnoutputcontainer
 MultiADStorageContainerName=mvadlearninputcontainer
