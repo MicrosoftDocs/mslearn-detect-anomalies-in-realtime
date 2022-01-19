@@ -76,7 +76,7 @@ echo 'IoT Hub created'
 # Register a device to IoT Hub
 echo '------------------------------------------'
 echo 'Registering a device in IoT Hub...'
-az iot hub device-identity create --device-id $DeviceName --hub-name $AzIoTHubName   
+az iot hub device-identity create --hub-name $AzIoTHubName --device-id $DeviceName
 echo 'IoT Device registered' 
 
 IoTConnStr=$(az iot hub connection-string show --query '[0].connectionString'  --output tsv)
