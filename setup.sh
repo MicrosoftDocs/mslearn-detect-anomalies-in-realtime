@@ -9,9 +9,10 @@ AccountId=$(az account list --query '[0].id'  --output tsv)
 RgName=$(az group list --query '[0].name'  --output tsv)
 Location=$(az group list --query '[0].location'  --output tsv)
 UUID=$(cat /proc/sys/kernel/random/uuid | sed 's/[-]//g' | head -c 14);
+stName='store'
 
 GaLocation=eastus2
-StorageAcctName='store'
+StorageAcctName=$stName$UUID
 StorageContainerName=learninputcontainer
 OuputStorageContainerName=learnoutputcontainer
 MultiADStorageContainerName=mvadlearninputcontainer
@@ -26,20 +27,10 @@ AdName=learnAnomalyDetector
 # Create a Storage Account for the Blob
 echo '------------------------------------------'
 echo 'Creating a Storage Account for the Blob...'
-az storage account create -n $StorageAcctName$UUID --resource-group="$RgName"
+az storage account create -n $StorageAcctName --resource-group="$RgName"
 echo 'Storage acount created'
 
 StorageConnStr=$(az storage account show-connection-string -g $RgName  -n $StorageAcctName --query connectionString --output tsv)
-
-# Get IoT Hub Device connection string
-echo ' ::: '
-echo '------------------------------------------'
-echo 'Copy BLOB_CONNECTION_STRING'
-echo '------------------------------------------'
-echo $StorageConnStr
-echo '------------------------------------------'
-echo ' ::: '
-
 
 # Create a Storage Container for for data in the Storage Account
 echo '------------------------------------------'
@@ -65,6 +56,14 @@ az storage container create \
     --name $MultiADStorageContainerName
 echo 'Storage container created'   
 
+
+# Add an Azure IoT CLI Extension
+echo '------------------------------------------'
+echo 'Adding an Azure IoT CLI Extension (OPTIONAL)...'
+az extension add --name azure-iot
+az config set extension.use_dynamic_install=yes_without_prompt
+echo 'IoT Hub Azure CLI extension added' 
+
 # Create an IoT Hub instance
 echo '------------------------------------------'
 echo 'Creating a IoT Hub instance...'
@@ -73,29 +72,14 @@ az iot hub create \
     --resource-group $RgName   
 echo 'IoT Hub created'    
 
-# Create an Azure IoT CLI Extension
-echo '------------------------------------------'
-echo 'Creating an Azure IoT CLI Extension (OPTIONAL)...'
-az extension add --name azure-iot
-az config set extension.use_dynamic_install=yes_without_prompt
-echo 'IoT Hub Azure CLI extension created'  
-
 # Register a device to IoT Hub
 echo '------------------------------------------'
 echo 'Registering a device in IoT Hub...'
 az iot hub device-identity create --device-id $DeviceName --hub-name $AzIoTHubName   
-echo 'IoT Device created' 
+echo 'IoT Device registered' 
 
 IoTConnStr=$(az iot hub connection-string show --query '[0].connectionString'  --output tsv)
 
-# Get IoT Hub Device connection string
-echo ' ::: '
-echo '------------------------------------------'
-echo 'Copy IOTHUB_DEVICE_CONNECTION_STRING'
-echo '------------------------------------------'
-echo $IoTConnStr
-echo '------------------------------------------'
-echo ' ::: '
 
 # Create a destination to Route endpoint IoT messages
 echo '------------------------------------------'
@@ -133,6 +117,24 @@ echo '------------------------------------------'
 echo 'Copy API_KEY_ANOMALY_DETECTOR'
 echo '------------------------------------------'
 echo $APIKey
+echo '------------------------------------------'
+echo ' ::: '
+
+# Get Blob connection string
+echo ' ::: '
+echo '------------------------------------------'
+echo 'Copy BLOB_CONNECTION_STRING'
+echo '------------------------------------------'
+echo $StorageConnStr
+echo '------------------------------------------'
+echo ' ::: '
+
+# Get IoT Hub Device connection string
+echo ' ::: '
+echo '------------------------------------------'
+echo 'Copy IOTHUB_DEVICE_CONNECTION_STRING'
+echo '------------------------------------------'
+echo $IoTConnStr
 echo '------------------------------------------'
 echo ' ::: '
 
