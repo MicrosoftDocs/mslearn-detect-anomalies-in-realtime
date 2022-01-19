@@ -10,13 +10,14 @@ RgName=$(az group list --query '[0].name'  --output tsv)
 Location=$(az group list --query '[0].location'  --output tsv)
 UUID=$(cat /proc/sys/kernel/random/uuid | sed 's/[-]//g' | head -c 14);
 stName='store'
+iot='myLearnIoTHub'
 
 GaLocation=eastus2
 StorageAcctName=$stName$UUID
 StorageContainerName=learninputcontainer
 OuputStorageContainerName=learnoutputcontainer
 MultiADStorageContainerName=mvadlearninputcontainer
-AzIoTHubName=myLearnIoTHub
+AzIoTHubName=$iot$UUID
 DeviceName=myPowerSensor
 condition='level="storage"'
 endpointName=storageEndpoint
