@@ -8,10 +8,10 @@ echo '--------------------------------------------------------'
 AccountId=$(az account list --query '[0].id'  --output tsv)
 RgName=$(az group list --query '[0].name'  --output tsv)
 Location=$(az group list --query '[0].location'  --output tsv)
-UUID=$(cat /proc/sys/kernel/random/uuid | sed 's/[-]//g' | head -c 20);
+UUID=$(cat /proc/sys/kernel/random/uuid | sed 's/[-]//g' | head -c 14);
 
 GaLocation=eastus2
-StorageAcctName='learnsacct'
+StorageAcctName='store'
 StorageContainerName=learninputcontainer
 OuputStorageContainerName=learnoutputcontainer
 MultiADStorageContainerName=mvadlearninputcontainer
