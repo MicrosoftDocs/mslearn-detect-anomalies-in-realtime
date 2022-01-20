@@ -19,11 +19,11 @@ OuputStorageContainerName=learnoutputcontainer
 MultiADStorageContainerName=mvadlearninputcontainer
 AzIoTHubName=$iot$UUID
 DeviceName=myPowerSensor
-condition='level="storage"'
+condition='true'
 endpointName=storageEndpoint
 endpointType=azurestoragecontainer
 routeName=storageRoute
-AdName=learnAnomalyDetector
+AdName=learnanomalydetector
 
 # Create a Storage Account for the Blob
 echo '------------------------------------------'
@@ -85,7 +85,7 @@ IoTConnStr=$(az iot hub device-identity connection-string show  --device-id $Dev
 # Create a destination to Route endpoint IoT messages
 echo '------------------------------------------'
 echo 'Creating a destination to Route IoT messages...'
-az iot hub routing-endpoint create --endpoint-name=S1 --hub-name $AzIoTHubName --endpoint-resource-group $RgName --endpoint-subscription-id $AccountId --endpoint-type azurestoragecontainer --connection-string $StorageConnStr --container $StorageContainerName --encoding=avro
+az iot hub routing-endpoint create --endpoint-name=storageEP --hub-name $AzIoTHubName --endpoint-resource-group $RgName --endpoint-subscription-id $AccountId --endpoint-type azurestoragecontainer --connection-string $StorageConnStr --container $StorageContainerName --encoding=json
 echo 'IoT routing endpoint storage created' 
 
 # Create a destination to Route IoT messages
@@ -98,7 +98,7 @@ echo 'IoT routing storage created'
 # Create an Anomaly Detector instance
 echo '------------------------------------------'
 echo 'Creating an Anomaly Detector instance...'
-az cognitiveservices account create --kind AnomalyDetector --name $AdName --resource-group $RgName --location $GaLocation --sku S0 --subscription $AccountId
+az cognitiveservices account create --kind AnomalyDetector --name $AdName --resource-group $RgName --location $GaLocation --sku S0 --subscription $AccountId --yes --custom-domain $AdName
 echo 'Anomaly Detector instance created' 
 
 # Get Anomaly Detector instance name
