@@ -11,6 +11,7 @@ Location=$(az group list --query '[0].location'  --output tsv)
 UUID=$(cat /proc/sys/kernel/random/uuid | sed 's/[-]//g' | head -c 14);
 stName='store'
 iot='myLearnIoTHub'
+ad='anomaly'
 
 GaLocation=eastus2
 StorageAcctName=$stName$UUID
@@ -23,7 +24,7 @@ condition='true'
 endpointName=storageEndpoint
 endpointType=azurestoragecontainer
 routeName=storageRoute
-AdName=learnanomalydetector
+AdName=$ad$UUID
 
 # Create a Storage Account for the Blob
 echo '------------------------------------------'
@@ -85,7 +86,7 @@ IoTConnStr=$(az iot hub device-identity connection-string show  --device-id $Dev
 # Create a destination to Route endpoint IoT messages
 echo '------------------------------------------'
 echo 'Creating a destination to Route IoT messages...'
-az iot hub routing-endpoint create --endpoint-name=storageEP --hub-name $AzIoTHubName --endpoint-resource-group $RgName --endpoint-subscription-id $AccountId --endpoint-type azurestoragecontainer --connection-string $StorageConnStr --container $StorageContainerName --encoding=json
+az iot hub routing-endpoint create --endpoint-name=S1 --hub-name $AzIoTHubName --endpoint-resource-group $RgName --endpoint-subscription-id $AccountId --endpoint-type azurestoragecontainer --connection-string $StorageConnStr --container $StorageContainerName --encoding=json
 echo 'IoT routing endpoint storage created' 
 
 # Create a destination to Route IoT messages
