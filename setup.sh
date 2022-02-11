@@ -38,6 +38,8 @@ routeName=storageRoute
 format=json
 AdName=$ad$UUID
 
+echo 'ad location:' $GaLocation
+
 # Create a Storage Account for the Blob
 echo '------------------------------------------'
 echo 'Creating a Storage Account for the Blob...'
