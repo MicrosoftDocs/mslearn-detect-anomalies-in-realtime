@@ -2,6 +2,7 @@ azure-iot-device
 azure-storage-blob 
 azure-core 
 pandas 
+numpy
 bokeh 
 ipywidgets 
 azure-ai-anomalydetector 
