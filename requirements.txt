@@ -1,0 +1,8 @@
+azure-iot-device 
+azure-storage-blob 
+azure-core pandas 
+matplotlib 
+bokeh 
+ipywidgets 
+azure-ai-anomalydetector 
+azure-core
