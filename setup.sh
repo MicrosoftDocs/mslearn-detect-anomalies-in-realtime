@@ -48,7 +48,7 @@ echo 'Storage acount created'
 
 StorageConnStr=$(az storage account show-connection-string -g $RgName  -n $StorageAcctName --query connectionString --output tsv)
 
-# Create a Storage Container for for data in the Storage Account
+# Create a Storage Container for data in the Storage Account
 echo '------------------------------------------'
 echo 'Creating a Storage Container in the Storage Account for univariant AD raw data...'
 az storage container create \
